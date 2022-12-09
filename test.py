@@ -4,6 +4,7 @@ import cv2
 from PIL import Image, ImageEnhance
 from glob import glob as gl
 import PIL
+import argparse
 W = 224
 H = 224
 
@@ -143,12 +144,17 @@ def predict(model, img):
 
 
 if __name__ == "__main__":
-    files = gl("Data/2020_Nr63_Garne von Janßen/alpha130/*")
-    model = load_model("models/model.h5")
-    random = np.random.choice(files)
-    out, boxes = crop_object(random)
+    parser = argparse.ArgumentParser(description='Calculate twist angle from image')
+    parser.add_argument('--image', metavar='N', type=str, nargs='+',
+                        help='file path')
+
+    args = parser.parse_args()
+    print(args.image)
+    out, boxes = crop_object(args.image[0])
     crops = sort_box(out, boxes)
     angles = []
+
+    model = load_model("models/model.h5")
     for i in range(crops.shape[0]-1):
         angle = predict(model, crops[i])
         angles.append(angle)
