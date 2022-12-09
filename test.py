@@ -155,7 +155,7 @@ if __name__ == "__main__":
     angles = []
 
     model = load_model("models/model.h5")
-    for i in range(crops.shape[0]-1):
+    for i in range(crops.shape[0]):
         angle = predict(model, crops[i])
         angles.append(angle)
 
